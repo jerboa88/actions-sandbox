@@ -1,6 +1,19 @@
-# Title
+<!-- Project Header -->
+<div align="center"> 
+  <h1 class="projectName">PROJECT NAME</h1>
 
-Description.
+  <p class="projectBadges">
+    <a href="https://unmaintained.tech/">
+      <img src="https://unmaintained.tech/badge.svg" alt="No Maintenance Intended" title="No Maintenance Intended"/>
+    </a>
+  </p>
+  
+  <p class="projectDesc">
+    LONG DESCRIPTION
+  </p>
+  
+  <br/>
+</div>
 
 [meta:exposition]: # (Mock exposition)
 [meta:category]: # (App)
