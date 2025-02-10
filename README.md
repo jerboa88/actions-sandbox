@@ -1,19 +1,44 @@
 <!-- Project Header -->
-<div align="center"> 
-  <h1 class="projectName">PROJECT NAME</h1>
+<div align="center">
+  <h1 class="projectName">Actions Sandbox</h1>
 
   <p class="projectBadges">
     <a href="https://unmaintained.tech/">
       <img src="https://unmaintained.tech/badge.svg" alt="No Maintenance Intended" title="No Maintenance Intended"/>
     </a>
   </p>
-  
+
   <p class="projectDesc">
-    LONG DESCRIPTION
+    A repo for testing workflows and integrations with the GitHub API
   </p>
-  
+
   <br/>
 </div>
+
+
+## About
+A repo for testing workflows and integrations with the GitHub API.
+
+
+## Installation
+...
+
+
+## Usage
+...
+
+
+## Contributing
+Issues, pull requests, forks, and other contributions are welcome.
+
+<!-- ALL-CONTRIBUTORS-LIST:START -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+
+## License
+This project is licensed under no License.
+
 
 [meta:exposition]: # (Mock exposition)
 [meta:category]: # (App)
