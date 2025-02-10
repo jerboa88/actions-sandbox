@@ -1,7 +1,7 @@
 {
   "projectName": "actions-sandbox",
   "projectOwner": "jerboa88",
-	"imageSize": 64,
-	"commitConvention": "gitmoji",
-	"contributorsPerLine": 1
+  "imageSize": 64,
+  "commitConvention": "gitmoji",
+  "contributorsPerLine": 1
 }
