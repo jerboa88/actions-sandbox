@@ -1,7 +1,15 @@
 {
   "projectName": "actions-sandbox",
   "projectOwner": "jerboa88",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
   "imageSize": 64,
+  "commit": false,
   "commitConvention": "gitmoji",
-  "contributorsPerLine": 1
+  "contributors": [],
+  "contributorsPerLine": 7,
+  "linkToUsage": true
 }
