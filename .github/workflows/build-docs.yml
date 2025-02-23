@@ -1,0 +1,77 @@
+name: Update Documentation
+on:
+  push:
+    paths: src/docs/**
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    # permissions:
+    #   contents: read
+    #   pull-requests: write
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+
+      - name: Checkout documentation templates repo
+        uses: actions/checkout@v4
+        with:
+          repository: jerboa88/actions-sandbox-2
+          path: src/docs/default
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            templates
+            scripts
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Save GitHub context
+        run: |
+          {
+            echo 'REPO_DATA<<EOF'
+            echo '${{ toJson(github.event.repository) }}'
+            echo EOF
+          } >> "$GITHUB_ENV"
+
+      - name: Save repo data (owner)
+        uses: ./.github/actions/github-api-fetch
+        with:
+          path: 'users/${{ github.repository_owner }}'
+          env-var-name: REPO_OWNER_DATA
+
+      - name: Fetch repo data (latest release)
+        uses: ./.github/actions/github-api-fetch
+        with:
+          path: 'repos/${{ github.repository }}/releases/latest'
+          env-var-name: REPO_LATEST_RELEASE_DATA
+
+      - name: Fetch repo data (private vulnerability reporting status)
+        uses: ./.github/actions/github-api-fetch
+        with:
+          path: 'repos/${{ github.repository }}/private-vulnerability-reporting'
+          env-var-name: REPO_VUL_REP_DATA
+
+      - name: Transform data
+        working-directory: ./src/docs
+        run: |
+          {
+            echo 'NUNJUCKS_DATA<<EOF'
+            node default/scripts/transform-data.mjs project.json REPO_DATA REPO_OWNER_DATA REPO_LATEST_RELEASE_DATA REPO_VUL_REP_DATA
+            echo EOF
+          } >> "$GITHUB_ENV"
+
+      - name: Generate document (CONTRIBUTING.md)
+        uses: ./.github/actions/generate-doc
+        with:
+          template-path: src/docs/CONTRIBUTING.md.njk
+          data: ${{ env.NUNJUCKS_DATA }}
+          output-path: docs/CONTRIBUTING.md
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'LICENSE *.md'
+          committer_name: dojomentation[bot]
+          message: '📝 Update documentation'

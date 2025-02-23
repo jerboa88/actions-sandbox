@@ -1,0 +1,20 @@
+name: GitHub API Fetch
+description: Calls the GitHub API and sets an environment variable with the response
+inputs:
+  path:
+    description: The path to fetch from the GitHub API
+    required: true
+  env-var-name:
+    description: The name of the environment variable to set
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: 'Fetch from GitHub API (${{ inputs.path }} -> ${{ inputs.env-var-name }})'
+      shell: bash
+      run: |
+        {
+          echo '${{ inputs.env-var-name }}<<EOF'
+          curl -s 'https://api.github.com/${{ inputs.path }}'
+          echo EOF
+        } >> "$GITHUB_ENV"
