@@ -76,6 +76,6 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
-          add: 'LICENSE :(glob)**/*.md'
+          add: 'LICENSE :(glob)**/*.md :(exclude)src/docs/default/'
           committer_name: dojomentation[bot]
           message: '📝 Update documentation'
