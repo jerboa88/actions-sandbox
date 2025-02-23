@@ -13,7 +13,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Render template (${{ inputs.template-path }})
+    - name: 'Render template (${{ inputs.template-path }})'
       id: render-template
       uses: Lehoczky/render-nunjucks-template-action@v1.0.0
       with:
@@ -22,12 +22,15 @@ runs:
 
     - name: Get output directory
       id: get-output-dir
+      shell: bash
       run: echo "dir=$(dirname ${{ inputs.output-path }})" >> $GITHUB_OUTPUT
 
-    - name: Create directories (${{ steps.get-output-dir.outputs.dir }})
+    - name: 'Create directories (${{ steps.get-output-dir.outputs.dir }})'
+      shell: bash
       run: mkdir -p '${{ steps.get-output-dir.outputs.dir }}'
 
-    - name: Write output to file (${{ inputs.output-path }})
+    - name: 'Write output to file (${{ inputs.output-path }})'
+      shell: bash
       run: |
         cat << EOF > ${{ inputs.output-path }}
         ${{ steps.render-template.outputs.result }}
