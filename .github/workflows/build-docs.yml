@@ -7,7 +7,7 @@ on:
       - master
     paths: 'src/docs/**'
 jobs:
-  update-docs:
+  build-docs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -44,4 +44,4 @@ jobs:
           add: "['./LICENSE', ':(glob)**/*.md']"
           remove: './src/docs/default/'
           author_name: dojomentation[bot]
-          message: '📝 Build docs for ${{ github.sha }} [skip ci]'
+          message: '📝 build docs for ${{ github.sha }} [skip ci]'
