@@ -1,14 +1,14 @@
-name: Update Documentation
+name: Build Documentation
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
+      - master
     paths: src/docs/**
 jobs:
   update-docs:
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: read
-    #   pull-requests: write
     permissions:
       contents: write
     steps:
@@ -78,6 +78,7 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
-          add: "['LICENSE', ':(glob)**/*.md', ':(exclude)src/docs/default/']"
-          committer_name: dojomentation[bot]
-          message: '📝 Update documentation'
+          add: "['./LICENSE', ':(glob)**/*.md']"
+          remove: './src/docs/default/'
+          author_name: dojomentation[bot]
+          message: '📝 Build docs for ${ github.sha } [skip ci]'
