@@ -1,0 +1,53 @@
+name: Get Nunjucks Data
+description: Fetch and transform the data to pass to a nunjucks template
+inputs:
+  project-data-path:
+    description: The path to a JSON file containing the project data
+    required: true
+outputs:
+  data:
+    description: The JSON data to pass to the template
+    value: ${{ steps.transform-data.outputs.data }}
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
+    - name: Save GitHub Context
+      run: |
+        {
+          echo 'REPO_DATA<<EOF'
+          echo '${{ toJson(github.event.repository) }}'
+          echo EOF
+        } >> "$GITHUB_ENV"
+
+    - name: Save Repo Data (owner)
+      uses: ./.github/actions/github-api-fetch
+      with:
+        path: 'users/${{ github.repository_owner }}'
+        env-var-name: REPO_OWNER_DATA
+
+    - name: Fetch Repo Data (latest release)
+      uses: ./.github/actions/github-api-fetch
+      with:
+        path: 'repos/${{ github.repository }}/releases/latest'
+        env-var-name: REPO_LATEST_RELEASE_DATA
+
+    - name: Fetch Repo Data (private vulnerability reporting status)
+      uses: ./.github/actions/github-api-fetch
+      with:
+        path: 'repos/${{ github.repository }}/private-vulnerability-reporting'
+        env-var-name: REPO_VUL_REP_DATA
+
+    - name: Transform Data
+      id: transform-data
+      working-directory: ./src/docs
+      run: |
+        {
+          echo 'data<<EOF'
+          node default/scripts/transform-data.mjs ${{ inputs.project-data-path }} REPO_DATA REPO_OWNER_DATA REPO_LATEST_RELEASE_DATA REPO_VUL_REP_DATA
+          echo EOF
+        } >> "$GITHUB_OUTPUT"

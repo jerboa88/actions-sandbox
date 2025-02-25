@@ -1,4 +1,4 @@
-name: Build Documentation
+name: Build Docs
 on:
   workflow_dispatch:
   push:
@@ -12,10 +12,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout current repo
+      - name: Checkout Repo (current)
         uses: actions/checkout@v4
 
-      - name: Checkout documentation templates repo
+      - name: Checkout Repo (documentation templates)
         uses: actions/checkout@v4
         with:
           repository: jerboa88/actions-sandbox-2
@@ -25,57 +25,60 @@ jobs:
             templates
             scripts
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        - name: Get Nunjucks Data
+          id: get-nunjucks-data
+          uses: ./.github/actions/get-nunjucks-data
+          with:
+            project-data-path: projects.json
 
-      - name: Save GitHub context
-        run: |
-          {
-            echo 'REPO_DATA<<EOF'
-            echo '${{ toJson(github.event.repository) }}'
-            echo EOF
-          } >> "$GITHUB_ENV"
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 22
 
-      - name: Save repo data (owner)
-        uses: ./.github/actions/github-api-fetch
-        with:
-          path: 'users/${{ github.repository_owner }}'
-          env-var-name: REPO_OWNER_DATA
+      # - name: Save GitHub context
+      #   run: |
+      #     {
+      #       echo 'REPO_DATA<<EOF'
+      #       echo '${{ toJson(github.event.repository) }}'
+      #       echo EOF
+      #     } >> "$GITHUB_ENV"
 
-      - name: Fetch repo data (latest release)
-        uses: ./.github/actions/github-api-fetch
-        with:
-          path: 'repos/${{ github.repository }}/releases/latest'
-          env-var-name: REPO_LATEST_RELEASE_DATA
+      # - name: Save repo data (owner)
+      #   uses: ./.github/actions/github-api-fetch
+      #   with:
+      #     path: 'users/${{ github.repository_owner }}'
+      #     env-var-name: REPO_OWNER_DATA
 
-      - name: Fetch repo data (private vulnerability reporting status)
-        uses: ./.github/actions/github-api-fetch
-        with:
-          path: 'repos/${{ github.repository }}/private-vulnerability-reporting'
-          env-var-name: REPO_VUL_REP_DATA
+      # - name: Fetch repo data (latest release)
+      #   uses: ./.github/actions/github-api-fetch
+      #   with:
+      #     path: 'repos/${{ github.repository }}/releases/latest'
+      #     env-var-name: REPO_LATEST_RELEASE_DATA
 
-      - name: Transform data
-        working-directory: ./src/docs
-        run: |
-          {
-            echo 'NUNJUCKS_DATA<<EOF'
-            node default/scripts/transform-data.mjs project.json REPO_DATA REPO_OWNER_DATA REPO_LATEST_RELEASE_DATA REPO_VUL_REP_DATA
-            echo EOF
-          } >> "$GITHUB_ENV"
+      # - name: Fetch repo data (private vulnerability reporting status)
+      #   uses: ./.github/actions/github-api-fetch
+      #   with:
+      #     path: 'repos/${{ github.repository }}/private-vulnerability-reporting'
+      #     env-var-name: REPO_VUL_REP_DATA
 
-      - name: Generate document (CONTRIBUTING.md)
+      # - name: Transform data
+      #   working-directory: ./src/docs
+      #   run: |
+      #     {
+      #       echo 'NUNJUCKS_DATA<<EOF'
+      #       node default/scripts/transform-data.mjs project.json REPO_DATA REPO_OWNER_DATA REPO_LATEST_RELEASE_DATA REPO_VUL_REP_DATA
+      #       echo EOF
+      #     } >> "$GITHUB_ENV"
+
+      - name: Generate Doc (CONTRIBUTING.md)
         uses: ./.github/actions/generate-doc
         with:
           template-path: src/docs/CONTRIBUTING.md.njk
-          data: ${{ env.NUNJUCKS_DATA }}
+          data: ${{ steps.get-nunjucks-data.outputs.data }}
           output-path: docs/CONTRIBUTING.md
 
-      - name: Print document (CONTRIBUTING.md)
-        run: cat docs/CONTRIBUTING.md
-
-      - name: Commit changes
+      - name: Commit Changes
         uses: EndBug/add-and-commit@v9
         with:
           add: "['./LICENSE', ':(glob)**/*.md']"
