@@ -1,4 +1,4 @@
-name: GitHub API Fetch
+name: 📥 Fetch from GitHub API
 description: Calls the GitHub API and sets an environment variable with the response
 inputs:
   path:
@@ -10,7 +10,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: 'Fetch from GitHub API (${{ inputs.path }} -> ${{ inputs.env-var-name }})'
+    - name: '📥 Fetch from GitHub API (${{ inputs.path }} -> ${{ inputs.env-var-name }})'
       shell: bash
       run: |
         {

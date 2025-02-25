@@ -1,4 +1,4 @@
-name: Get Nunjucks Data
+name: 📊 Get Nunjucks Data
 description: Fetch and transform the data to pass to a nunjucks template
 inputs:
   project-data-path:
@@ -11,12 +11,12 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Setup Node.js
+    - name: 🛠️ Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 22
 
-    - name: Save GitHub Context
+    - name: 💾 Save GitHub Context
       shell: bash
       run: |
         {
@@ -25,25 +25,25 @@ runs:
           echo EOF
         } >> "$GITHUB_ENV"
 
-    - name: Save Repo Data (owner)
-      uses: ./.github/actions/github-api-fetch
+    - name: 📥 Fetch Repo Data (owner)
+      uses: ./.github/actions/fetch-from-github-api
       with:
         path: 'users/${{ github.repository_owner }}'
         env-var-name: REPO_OWNER_DATA
 
-    - name: Fetch Repo Data (latest release)
-      uses: ./.github/actions/github-api-fetch
+    - name: 📥 Fetch Repo Data (latest release)
+      uses: ./.github/actions/fetch-from-github-api
       with:
         path: 'repos/${{ github.repository }}/releases/latest'
         env-var-name: REPO_LATEST_RELEASE_DATA
 
-    - name: Fetch Repo Data (private vulnerability reporting status)
-      uses: ./.github/actions/github-api-fetch
+    - name: 📥 Fetch Repo Data (private vulnerability reporting status)
+      uses: ./.github/actions/fetch-from-github-api
       with:
         path: 'repos/${{ github.repository }}/private-vulnerability-reporting'
         env-var-name: REPO_VUL_REP_DATA
 
-    - name: Transform Data
+    - name: 🪄 Transform Data
       id: transform-data
       shell: bash
       working-directory: ./src/docs

@@ -1,4 +1,4 @@
-name: Build Docs
+name: 📝 Build Docs
 on:
   workflow_dispatch:
   push:
@@ -12,10 +12,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout Repo (current)
+      - name: 📂 Checkout Repo (current)
         uses: actions/checkout@v4
 
-      - name: Checkout Repo (documentation templates)
+      - name: 📂 Checkout Repo (documentation templates)
         uses: actions/checkout@v4
         with:
           repository: jerboa88/actions-sandbox-2
@@ -25,20 +25,20 @@ jobs:
             templates
             scripts
 
-      - name: Get Nunjucks Data
+      - name: 📊 Get Nunjucks Data
         id: get-nunjucks-data
         uses: ./.github/actions/get-nunjucks-data
         with:
           project-data-path: project.json
 
-      - name: Generate Doc (CONTRIBUTING.md)
-        uses: ./.github/actions/generate-doc
+      - name: 📝 Build Doc (CONTRIBUTING.md)
+        uses: ./.github/actions/build-doc
         with:
           template-path: src/docs/CONTRIBUTING.md.njk
           data: ${{ steps.get-nunjucks-data.outputs.data }}
           output-path: docs/CONTRIBUTING.md
 
-      - name: Commit Changes
+      - name: 📤 Commit Changes
         uses: EndBug/add-and-commit@v9
         with:
           add: "['./LICENSE', ':(glob)**/*.md']"
