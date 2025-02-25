@@ -81,4 +81,4 @@ jobs:
           add: "['./LICENSE', ':(glob)**/*.md']"
           remove: './src/docs/default/'
           author_name: dojomentation[bot]
-          message: '📝 Build docs for ${ github.sha } [skip ci]'
+          message: '📝 Build docs for ${{ github.sha }} [skip ci]'
