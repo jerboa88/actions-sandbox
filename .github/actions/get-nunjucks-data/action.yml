@@ -17,6 +17,7 @@ runs:
         node-version: 22
 
     - name: Save GitHub Context
+      shell: bash
       run: |
         {
           echo 'REPO_DATA<<EOF'
@@ -44,6 +45,7 @@ runs:
 
     - name: Transform Data
       id: transform-data
+      shell: bash
       working-directory: ./src/docs
       run: |
         {
