@@ -1,6 +1,4 @@
 name: 📝 Build Docs
-env:
-  DOCS_SOURCE_PATH: src/docs
 on:
   workflow_dispatch:
   push:
@@ -8,6 +6,9 @@ on:
       - main
       - master
     paths: './src/docs/**'
+env:
+  TEMPLATES_PATH: ./src/docs
+  DEFAULT_TEMPLATES_PATH: ./src/docs/default
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -21,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: jerboa88/actions-sandbox-2
-          path: './${{ env.DOCS_SOURCE_PATH }}/default'
+          path: '${{ env.DEFAULT_TEMPLATES_PATH }}/'
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             templates
@@ -31,12 +32,12 @@ jobs:
         id: get-nunjucks-data
         uses: ./.github/actions/get-nunjucks-data
         with:
-          project-data-path: './${{ env.DOCS_SOURCE_PATH }}/project.json'
+          project-data-path: '${{ env.TEMPLATES_PATH }}/project.json'
 
       - name: 📝 Build Doc (CONTRIBUTING.md)
         uses: ./.github/actions/build-doc
         with:
-          template-path: '${{ env.DOCS_SOURCE_PATH }}/CONTRIBUTING.md.njk'
+          template-path: '${{ env.TEMPLATES_PATH }}/CONTRIBUTING.md.njk'
           data: ${{ steps.get-nunjucks-data.outputs.data }}
           output-path: ./docs/CONTRIBUTING.md
 
@@ -44,6 +45,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           add: "['./LICENSE', ':(glob)**/*.md']"
-          remove: './${{ env.DOCS_SOURCE_PATH }}/default/'
+          remove: '${{ env.DEFAULT_TEMPLATES_PATH }}/'
           author_name: dojomentation[bot]
           message: '📝 build docs for ${{ github.sha }} [skip ci]'
