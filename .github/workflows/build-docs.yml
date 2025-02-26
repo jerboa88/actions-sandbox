@@ -30,12 +30,12 @@ jobs:
 
       - name: 📊 Get Nunjucks Data
         id: get-nunjucks-data
-        uses: ./.github/actions/get-nunjucks-data
+        uses: jerboa88/actions-sandbox-2/actions/get-nunjucks-data@main
         with:
           project-data-path: '${{ env.TEMPLATES_PATH }}/project.json'
 
       - name: 📝 Build Doc (CONTRIBUTING.md)
-        uses: ./.github/actions/build-doc
+        uses: jerboa88/actions-sandbox-2/actions/build-doc@main
         with:
           template-path: '${{ env.TEMPLATES_PATH }}/CONTRIBUTING.md.njk'
           data: ${{ steps.get-nunjucks-data.outputs.data }}
