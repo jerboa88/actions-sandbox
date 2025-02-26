@@ -1,5 +1,5 @@
 name: 📊 Get Nunjucks Data
-description: Fetch and transform the data to pass to a nunjucks template
+description: Fetch, combine, and transform the data to pass to a Nunjucks template
 inputs:
   project-data-path:
     description: The path to a JSON file containing the project data
@@ -43,3 +43,6 @@ runs:
         repo-owner-data: ${{ steps.owner.outputs.response }}
         repo-latest-release-data: ${{ steps.latest-release.outputs.response }}
         repo-vul-rep-data: ${{ steps.vul-rep.outputs.response }}
+branding:
+  icon: 'bar-chart-2'
+  color: green

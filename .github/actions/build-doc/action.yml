@@ -1,5 +1,5 @@
 name: 📝 Build Doc
-description: Render a nunjucks template and write the output to a file
+description: Render a Nunjucks template and write the output to a file
 inputs:
   template-path:
     description: The path to the template file
@@ -35,3 +35,6 @@ runs:
         cat << EOF > ${{ inputs.output-path }}
         ${{ steps.render-template.outputs.result }}
         EOF
+branding:
+  icon: 'file-text'
+  color: green
