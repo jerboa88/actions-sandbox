@@ -5,7 +5,8 @@ on:
     branches:
       - main
       - master
-    paths: './src/docs/**'
+    paths:
+      - './src/docs/**'
 env:
   TEMPLATES_PATH: ./src/docs
   DEFAULT_TEMPLATES_PATH: ./src/docs/default
