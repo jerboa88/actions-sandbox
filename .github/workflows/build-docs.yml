@@ -6,7 +6,7 @@ on:
       - main
       - master
     paths:
-      - './src/docs/**'
+      - 'src/docs/**'
 env:
   TEMPLATES_PATH: ./src/docs
   DEFAULT_TEMPLATES_PATH: ./src/docs/default
