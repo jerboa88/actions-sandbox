@@ -16,40 +16,30 @@ runs:
       with:
         node-version: 22
 
-    - name: 💾 Save GitHub Context
-      shell: bash
-      run: |
-        {
-          echo 'REPO_DATA<<EOF'
-          echo '${{ toJson(github.event.repository) }}'
-          echo EOF
-        } >> "$GITHUB_ENV"
-
     - name: 📥 Fetch Repo Data (owner)
+      id: owner
       uses: ./.github/actions/fetch-from-github-api
       with:
         path: 'users/${{ github.repository_owner }}'
-        env-var-name: REPO_OWNER_DATA
 
     - name: 📥 Fetch Repo Data (latest release)
+      id: latest-release
       uses: ./.github/actions/fetch-from-github-api
       with:
         path: 'repos/${{ github.repository }}/releases/latest'
-        env-var-name: REPO_LATEST_RELEASE_DATA
 
     - name: 📥 Fetch Repo Data (private vulnerability reporting status)
+      id: vul-rep
       uses: ./.github/actions/fetch-from-github-api
       with:
         path: 'repos/${{ github.repository }}/private-vulnerability-reporting'
-        env-var-name: REPO_VUL_REP_DATA
 
     - name: 🪄 Transform Data
       id: transform-data
-      shell: bash
-      working-directory: ./src/docs
-      run: |
-        {
-          echo 'data<<EOF'
-          node default/scripts/transform-data.mjs ${{ inputs.project-data-path }} REPO_DATA REPO_OWNER_DATA REPO_LATEST_RELEASE_DATA REPO_VUL_REP_DATA
-          echo EOF
-        } >> "$GITHUB_OUTPUT"
+      uses: ./.github/actions/transform-data
+      with:
+        project-data-path: ${{ inputs.project-data-path }}
+        repo-data: ${{ toJson(github.event.repository) }}
+        repo-owner-data: ${{ steps.owner.outputs.response }}
+        repo-latest-release-data: ${{ steps.latest-release.outputs.response }}
+        repo-vul-rep-data: ${{ steps.vul-rep.outputs.response }}

@@ -1,0 +1,25 @@
+name: 📊 Get Nunjucks Data
+description: Fetch and transform the data to pass to a nunjucks template
+inputs:
+  project-data-path:
+    description: The path to a JSON file containing the project data
+    required: true
+  repo-owner-data:
+    description: The data for the repository owner
+    required: true
+  repo-latest-release-data:
+    description: The data for the repository's latest release
+    required: true
+  repo-vul-rep-data:
+    description: The data for the repository's vulnerability report
+    required: true
+outputs:
+  data:
+    description: The JSON data to pass to the template
+    value: ${{ steps.transform-data.outputs.data }}
+runs:
+  using: node20
+  main: transform-data.mjs
+branding:
+  icon: 'git-merge'
+  color: green
