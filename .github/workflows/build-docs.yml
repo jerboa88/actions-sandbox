@@ -37,7 +37,7 @@ jobs:
 
       - name: 📊 Get Nunjucks Data
         id: data
-        uses: jerboa88/actions-sandbox-2/actions/data@main
+        uses: jerboa88/actions-sandbox-2/actions/get-nunjucks-data@main
         with:
           project-data-path: '${{ env.PATH_TEMPLATES }}/project.json'
 
