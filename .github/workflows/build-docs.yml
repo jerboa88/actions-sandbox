@@ -74,7 +74,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           add: |
-            ./${{ NAME_LICENSE }}
+            ./${{ env.NAME_LICENSE }}
             :(glob)**/*.md
           remove: '${{ env.PATH_DEFAULTS }}/'
           committer_name: dojomentation[bot]
