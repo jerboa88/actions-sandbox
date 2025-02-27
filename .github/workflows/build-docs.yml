@@ -8,8 +8,14 @@ on:
     paths:
       - 'src/docs/**'
 env:
-  TEMPLATES_PATH: ./src/docs
-  DEFAULT_TEMPLATES_PATH: ./src/docs/default
+  # Paths
+  PATH_TEMPLATES: ./src/docs
+  PATH_DEFAULTS: ./src/docs/default
+  # File Names
+  NAME_COC: CODE_OF_CONDUCT.md
+  NAME_CONTRIBUTING: CONTRIBUTING.md
+  NAME_LICENSE: LICENSE
+  NAME_SECURITY: SECURITY.md
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -23,30 +29,54 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: jerboa88/actions-sandbox-2
-          path: '${{ env.DEFAULT_TEMPLATES_PATH }}/'
+          path: '${{ env.PATH_DEFAULTS }}/'
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             templates
             scripts
 
       - name: 📊 Get Nunjucks Data
-        id: get-nunjucks-data
-        uses: jerboa88/actions-sandbox-2/actions/get-nunjucks-data@main
+        id: data
+        uses: jerboa88/actions-sandbox-2/actions/data@main
         with:
-          project-data-path: '${{ env.TEMPLATES_PATH }}/project.json'
+          project-data-path: '${{ env.PATH_TEMPLATES }}/project.json'
 
-      - name: 📝 Build Doc (CONTRIBUTING.md)
+      - name: '📝 Build Doc (${{ env.NAME_COC }})'
         uses: jerboa88/actions-sandbox-2/actions/build-doc@main
         with:
-          template-path: '${{ env.TEMPLATES_PATH }}/CONTRIBUTING.md.njk'
-          data: ${{ steps.get-nunjucks-data.outputs.data }}
-          output-path: ./docs/CONTRIBUTING.md
+          data: ${{ steps.data.outputs.data }}
+          template-path: '${{ env.PATH_DEFAULTS }}/templates/layouts/${{ env.NAME_COC }}.njk'
+          output-path: './docs/${{ env.NAME_COC }}'
+
+      # TODO: Move template to defaults repo
+      - name: '📝 Build Doc (${{ env.NAME_CONTRIBUTING }})'
+        uses: jerboa88/actions-sandbox-2/actions/build-doc@main
+        with:
+          data: ${{ steps.data.outputs.data }}
+          template-path: '${{ env.PATH_TEMPLATES }}/${{ env.NAME_CONTRIBUTING }}.njk'
+          output-path: './docs/${{ env.NAME_CONTRIBUTING }}'
+
+      - name: '📝 Build Doc (${{ env.NAME_LICENSE }})'
+        uses: jerboa88/actions-sandbox-2/actions/build-doc@main
+        with:
+          data: ${{ steps.data.outputs.data }}
+          template-path: '${{ env.PATH_DEFAULTS }}/templates/layouts/${{ env.NAME_LICENSE }}.njk'
+          output-path: './${{ env.NAME_LICENSE }}'
+
+      - name: '📝 Build Doc (${{ env.NAME_SECURITY }})'
+        uses: jerboa88/actions-sandbox-2/actions/build-doc@main
+        with:
+          data: ${{ steps.data.outputs.data }}
+          template-path: '${{ env.PATH_DEFAULTS }}/templates/layouts/${{ env.NAME_SECURITY }}.njk'
+          output-path: './docs/${{ env.NAME_SECURITY }}'
 
       - name: 📤 Commit Changes
         uses: EndBug/add-and-commit@v9
         with:
-          add: "['./LICENSE', ':(glob)**/*.md']"
-          remove: '${{ env.DEFAULT_TEMPLATES_PATH }}/'
+          add: |
+            ./${{ NAME_LICENSE }}
+            :(glob)**/*.md
+          remove: '${{ env.PATH_DEFAULTS }}/'
           committer_name: dojomentation[bot]
           committer_email: dojomentation-bot.jerboa88@users.noreply.github.com
           message: '📝 build docs for ${{ github.sha }} [skip ci]'
