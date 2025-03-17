@@ -1,0 +1,9 @@
+{% extends dj.defaultTemplatesDir + '/layouts/CODE_OF_CONDUCT.md.njk' %}
+
+{% block code_of_conduct -%}
+The quick brown fox jumps over the lazy dog.
+
+{{ dj | dump | safe }}
+
+{{ gh | dump | safe }}
+{%- endblock -%}
