@@ -21,7 +21,7 @@ jobs:
         uses: dagger/dagger-for-github@8.0.0
         env:
           GH_CONTEXT_JSON: ${{ toJSON(github) }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version: latest
           verb: call
@@ -29,7 +29,7 @@ jobs:
           args: |2-
               --source-dir='./' \
               --default-templates-dir='https://github.com/jerboa88/actions-sandbox-2.git#main:templates' \
-              --token='env://GH_TOKEN' \
+              --token='env://GITHUB_TOKEN' \
             with-nunjucks-context \
               --data-file='src/docs/project.json' --output-key='pj' \
             with-nunjucks-context-from-github \
