@@ -30,9 +30,9 @@ jobs:
               --default-templates-dir='https://github.com/jerboa88/actions-sandbox-2.git#main:templates'
               --token='${{ secrets.GITHUB_TOKEN }}'
             with-nunjucks-context
-              --data-file='project.json'
+              --data-file='project.json' --output-key='pj'
             with-nunjucks-context-from-github
-              --github-context-json='$GITHUB_CONTEXT_JSON'
+              --github-context-secret='env://GITHUB_CONTEXT_JSON'
             build-and-commit-docs
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT.md'
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_2.md'
