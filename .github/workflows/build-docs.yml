@@ -20,20 +20,20 @@ jobs:
       - name: 📝 Build Docs with Dagger
         uses: dagger/dagger-for-github@8.0.0
         env:
-          GITHUB_CONTEXT_JSON: ${{ toJSON(github) }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_CONTEXT_JSON: ${{ toJSON(github) }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version: latest
           verb: call
           module: github.com/jerboa88/actions-sandbox-2/dagger
-          args: |-2
+          args: |2-
               --source-dir='./' \
               --default-templates-dir='https://github.com/jerboa88/actions-sandbox-2.git#main:templates' \
-              --token='env://GITHUB_TOKEN' \
+              --token='env://GH_TOKEN' \
             with-nunjucks-context \
               --data-file='src/docs/project.json' --output-key='pj' \
             with-nunjucks-context-from-github \
-              --github-context-secret='env://GITHUB_CONTEXT_JSON' \
+              --github-context-secret='env://GH_CONTEXT_JSON' \
             build-and-commit-docs \
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT.md' \
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_2.md' \
