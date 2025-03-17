@@ -25,12 +25,12 @@ jobs:
           version: latest
           verb: call
           module: github.com/jerboa88/actions-sandbox-2/dagger
-          args: |-2
+          args: |-2-
               --source-dir='./' \
               --default-templates-dir='https://github.com/jerboa88/actions-sandbox-2.git#main:templates' \
               --token='${{ secrets.GITHUB_TOKEN }}' \
             with-nunjucks-context \
-              --data-file='project.json' --output-key='pj' \
+              --data-file='src/docs/project.json' --output-key='pj' \
             with-nunjucks-context-from-github \
               --github-context-secret='env://GITHUB_CONTEXT_JSON' \
             build-and-commit-docs \
