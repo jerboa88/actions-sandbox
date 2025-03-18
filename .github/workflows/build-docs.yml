@@ -33,7 +33,7 @@ jobs:
               --default-templates-dir='https://github.com/jerboa88/actions-sandbox-2.git#main:templates' \
               --token='env://TOKEN' \
             with-nunjucks-context \
-              --data-file='src/docs/project.json' --output-key='pj' \
+              --data-file='src/docs/project.json' --output-key='project' \
             with-nunjucks-context-from-github \
               --github-context-secret='env://GITHUB_CONTEXT_JSON' \
             build-and-commit-docs \
@@ -41,4 +41,18 @@ jobs:
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_2.md' \
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_3.md' \
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_4.md'
+            export \
+              --path='./'
           cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+
+      - name: 📤 Commit Changes
+        uses: EndBug/add-and-commit@v9
+        if: ${{ !env.ACT }}
+        with:
+          add: |
+            ./LICENSE
+            :(glob)**/*.md
+          remove: '${{ env.PATH_DEFAULTS }}/'
+          committer_name: dojomentation[bot]
+          committer_email: dojomentation-bot.jerboa88@users.noreply.github.com
+          message: '📝 build docs for ${{ github.sha }} [skip ci]'
