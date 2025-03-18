@@ -40,7 +40,7 @@ jobs:
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT.md' \
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_2.md' \
               --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_3.md' \
-              --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_4.md'
+              --with-paths='src/docs/CODE_OF_CONDUCT.md.njk:docs/CODE_OF_CONDUCT_4.md' \
             export \
               --path='./'
           cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
