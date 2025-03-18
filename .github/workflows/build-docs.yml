@@ -52,7 +52,6 @@ jobs:
           add: |
             ./LICENSE
             :(glob)**/*.md
-          remove: '${{ env.PATH_DEFAULTS }}/'
           committer_name: dojomentation[bot]
           committer_email: dojomentation-bot.jerboa88@users.noreply.github.com
           message: '📝 build docs for ${{ github.sha }} [skip ci]'
