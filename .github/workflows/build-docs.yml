@@ -33,7 +33,8 @@ jobs:
               --default-templates-dir='https://github.com/jerboa88/actions-sandbox-2.git#main:templates' \
               --token='env://TOKEN' \
             with-nunjucks-context \
-              --data-file='src/docs/project.json' --output-key='project' \
+              --data-file='project-metadata.json' \
+              --output-key='project' \
             with-nunjucks-context-from-github \
               --github-context-secret='env://GITHUB_CONTEXT_JSON' \
             build-docs \

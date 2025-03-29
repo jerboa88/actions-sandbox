@@ -6,7 +6,7 @@
     "openToContributions": false
   },
   "category": "Plugin",
-  "license_name": "MIT License",
+  "licenseName": "MIT License",
   "logo": "https://localhost/",
   "npmPackageName": "gatsby-plugin-component-to-image",
   "languages": [
